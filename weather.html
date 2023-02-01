@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Weather App</title>
+	<link rel="stylesheet" type="text/css" 
+	href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Karla:wght@700&family=Poppins:wght@600&family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+	<script type="text/javascript" 
+	src="script.js" defer></script>
+	<style type="text/css">
+		body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: #222;
+    font-family: 'Inter', sans-serif;
+font-family: 'Karla', sans-serif;
+font-family: 'Poppins', sans-serif;
+font-family: 'Roboto', sans-serif;
+  background-image: url("a.jpg");
+  font-size: 120%;
+}
+
+
+
+
+
+
+
+
+.card {
+    background: #000000d0;
+    color: white;
+    padding: 2em;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 420px;
+    margin: 1em;
+}
+
+.search{
+   display: flex;
+   align-items: center;
+   justify-content: center; 
+}
+
+.btn{
+    margin: 0.5em;
+    border-radius: 50%;
+    border: none;
+    height: 46px;
+    width: 46px;
+    outline: none;
+    background: #7c7c7c2b;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+.btn:hover{
+    background: #7c7c7c6b;
+}
+.search-bar{
+    border: none;
+    outline: none;
+    padding: 0.5em 1em;
+    border-radius: 24px;
+    background: #7c7c7c2b;
+    color: white;
+    font-family: inherit;
+    font-size: 120%;
+    width: calc(100% - 100px);
+}
+	</style>
+</head>
+<body>
+   <div class="card">
+   	<div class="search">
+   		<input type="text" class="search-bar" placeholder="Search">
+   		<button class="btn">
+   			<img src="icon.png" alt="" width="12" height="12">
+
+   		</button>
+   	</div>
+   	<div class="weather">
+   	  <h2 class="city">Weather in...</h2>
+   	  <h1 class="temp">50°</h1>
+   	  <img src="" class="icon"/>
+   	  <div class="description">Cloudy</div>
+   	  <div class="humidity">Humidity: 60%</div>
+   	  <div class="wind">Wind Speed: 6 mph</div>
+   	</div>
+   </div>
+   <script type="text/javascript">
+   /*https://api.openweathermap.org/data/2.5/
+weather?q=brooklyn&units=imperial
+&APPID=19dd7ce9a1ef71da5a690e0ff39fb1e3*/
+
+
+let weather = {
+	'apiKey':'19dd7ce9a1ef71da5a690e0ff39fb1e3',
+	fetchWeather: function(city){
+	  fetch('https://api.openweathermap.org/data/2.5/weather?q='
+	  	+city+
+	  	'&units=imperial&APPID='+this.apiKey
+	  	).then((response)=> response.json())
+	     .then((data) => this.displayWeather(data) )
+	},
+
+	displayWeather: function(data){
+      const {name} = data 
+      const {icon, description} = data.weather[0]
+      const {temp, humidity} = data.main
+      const {speed} = data.wind 
+      console.log(name,icon,description,
+      	temp,humidity,speed)
+      document.querySelector('.city').innerText='Weather in ' + name
+//document.querySelector('.icon').src='https://api.openweathermap.org/img/wn/'+icon+'@2x.png'
+      document.querySelector('.description').innerText=description
+      document.querySelector('.temp').innerText=temp+'°  F' 
+	  document.querySelector('.humidity').innerText='Humidity: '+humidity+'%' 
+	 document.querySelector('.wind').innerText='Wind Speed: '+speed+' km/h'
+	 
+	},
+	search : function (){
+	this.fetchWeather(
+	 document.querySelector('.search-bar').value)
+	}
+}
+
+document.querySelector('.search button').
+addEventListener('click', function(){
+  weather.search()
+} )	
+   </script>
+</body>
+</html>
